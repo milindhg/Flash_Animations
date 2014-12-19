@@ -1,0 +1,90 @@
+diary=There are dozens of Registry tweaks and walkthroughs scattered around the pages of this site, and I'm not going to try to include them all here. Rather, I'm going to give an overview of what the Registry does, an idea of its overall structure, and some tweaks to provide better performance for your PC. I'm heavily indebted to the PC Magazine article of March 25, 2003, entitled Registry Tweaks for Better Performance, which can be found at www.pcmag.com/article2/0,4149,909988,00.asp, and include some information and tweaks that I've left out.
+
+ What exactly is the Registry? It first appeared in Windows 95 and NT, and is still a little-known, but essential, part of the Windows operating system. It controls just about everything Windows does: how it looks, how it works, and what you can and cannot do. We can access the Registry directly through REGEDIT (go through Start, Run and type REGEDIT), but doing so is akin to stepping off the tourbus and directly into the jungle. You can do it, and not only survive but even thrive and progess, but you'd better know what you're doing. If you're not comfortable with dealing with the Registry, then you're better off leaving it alone. Plenty of programs out there claim to "prune" and "clean out" the Registry; some of them are listed on my Disk, Maintenance, Hardware, and Diagnostic Utilities page. Be careful what you use and how you use it; some of these programs are strictly for the knowledgeable, and some can do unimaginable damage if used improperly.
+
+ There are five "root keys" that make up the Registry. They are: 
+
+HKEY_CLASSES_ROOT= HKCR 
+HKEY_CURRENT_USER= HKCU 
+HKEY_LOCAL_MACHINE= HKLM 
+HKEY_CURRENT_CONFIG= HKCC 
+HKEY_USERS= HKU 
+Other subsidiary keys branch off of these root keys. These subsidiary keys are what we will be working with. Before you make any changes using Regedit (i.e. after you highlight a key and before you change anything), back up its current contents by selecting Export from the Registry menu. The .REG file that is subsequently created is your insurance policy; you can add descriptive comments to the .REG file if you like, just remember to start your comment lines with a semi-colon (;). If a tweak doesn't work, launch the .REG file (by double-clicking it) to undo your changes.
+
+If you want to know more specifics about how the Registry operates, check the following sites: www.annoyances.org/, regedit.com/, newbieclub.com/rfncopy/?infopackets, members.aol.com/Knows98/regtips.htm, www.winguides.com/guides.php?guide=registry, and www.woram.com/.
+
+ Let's get into some tweaking, whaddya say? Rules of thumb: if the tweak calls for a specific key or value to be changed and that key or value doesn't exist at all, you can simply add it. You may need to log off and restart your computer for some changes to take effect. My advice: restart after every Registry tweak, don't try to make a number of changes and then restart, leaving Windows to handle a multiplicity of changes.
+
+In all cases cited below, when the Registry uses strings of digits and numbers, it uses zeroes and not upper-case O's.
+
+Customizing Your System 
+MultiColumn Start Menu: If you don't like your Start menu displaying only part of its contents, with arrows leading up and/or down to more items, and you'd prefer multiple columns displayed, here's how to do it:
+HKCU \ Software \ Microsoft \ Windows \ Current Version \ Explorer \ Advanced -- if you're running MSIE 6, change the StartMenuScrollPrograms string value to NO; if you're running another version of MSIE, change the string value to FALSE. 
+Customize Internet Explorer 4x and Later: The animated display in the right corner of IE (or Outlook Express) that displays while the browser is busy can be changed. It's a simple bitmap (.BMP) image after all. This tweak also removes or changes the branding string added to the window title. (If you hate the changes, restore the defaults by removing the five values added below.) For custom animated images, create or provide a 20x20-pixel and 38x38-pixel static bitmap images. Now create, or provide, multiple 20x20 bitmaps, with each successive frame of animation positioned below the previous one. Then do the same with a 38x38-pixel animated image, and make the following Registry tweak:
+HKCU \ Software \ Microsoft \ Internet Explorer \ Toolbar -- change the BigBitmap string value to the name of the large (38x38) static bitmap file. Change the SmallBitmap string value to the name of the smaller static bitmap file. Change the BrandBitmap string value to the name of the large animated bitmap. Change the SmBrandBitmap string value to the name of the small animated bitmap.
+HKCU \ Software \ Microsoft \Internet Explorer \ Main -- in WindowTitle, change the string value to the desired window title. 
+Add a Log-On Notification: This provides a message at logon; i.e. a notification of company policy, a romantic little goodie for your honey in the morning, or whatever. Compose the text as a single paragraph in Notepad, then add it like so:
+In Windows 9x/ME:
+HKLM \ SOFTWARE \ Microsoft \ Windows \ CurrentVersion \ Winlogon -- change the LegalNoticeCaption to your desired caption, and the LegalNoticeText to your desired text.
+In Windows NT/2K/XP:
+HKLM \ SOFTWARE \ Microsoft \ WindowsNT \ CurrentVersion \ Winlogon -- change the LegalNoticeCaption to your desired caption, and the LegalNoticeText to your desired text.
+
+Use Custom Drive Icons: In the tweak below, replace the word drive with the drive letter, and specify the path name of the icon file. If the file is an .EXE or .DLL file rather than an .ICO file, append a comma and the index of the icon within the file, like so: C:\WINDOWS\SYSTEM\SHELL32.DLL,13 for one example. Note: this tweak only works on Win 95 and NT systems if they've had the IE 4 Desktop Update included, and doesn't always work with Win 2K and XP.
+In Windows 9x/ME/NT:
+HKLM \ SOFTWARE \ Microsoft \ Windows \ CurrentVersion \ explorer \ driveicons \ drive \ DefaultIcon -- change the string value (Default) to whatever your desired icon is.
+In Windows 2K/XP: HKCR \ Applications \ explorer.exe \ Drives \ drive \ DefaultIcon -- change the string value (Default) to whatever your desired icon is.
+
+Noncentered Wallpaper: Along with the usual Display Properties choices of Center, Tile, and Stretch, this gives you the option to show a full-sized image off-center; you need to supply X and Y coordinates of the top left-hand corner.
+HKCU \ Control Panel \ Desktop -- change the string value of WallPaperOriginX to your desired X coordinate, and the string value of WallPaperOriginY to your desired Y coordinate. 
+Change the Recycle Bin Icon: You can change both the "empty" and "full" icons. As in the above example, if you're using an .EXE or .DLL file instead of an .ICO, you need to append a comma and the index of the icon within the file.
+HKCR \ CLSID \ {645FF040-5081-101B-9F08-00AA002F954E} -- change the string value (Default) to the new icon title.
+HKCR \ CLSID \ {645FF040-5081-101B-9F08-00AA002F954E} \ DefaultIcon -- change the string value (Default) to the icon for the empty bin. Change the Empty string value to the icon for the empty bin. Change the Full string value to the icon for the full bin. 
+Control the Way Applications 'Take Focus:' Normally, when a background application wants to grab your attention, the default action is for the taskbar button to flash three times and then wait for you to click it. With this tweak, you can change the number of flashes or let background applications take focus immediately (the equivalent of shoving the currently active app aside in favor of the new app).
+HKCU \ Control Panel \ Desktop -- change the ForegroundFlashCount DWORD value to whatever number suits you (0 for infinite flashes). Change the ForegroundLockTimeout DWORD value to whatever you like; 0 is infinite, 200000 is the default. 
+Fixing Problems: 
+Remove Unwanted Right-Click Menu Items in IE 4x and Later: These tend to pile up as applications come and go on your machine. Here's how to get rid of them:
+HKCU \ Software \ Microsoft \ InternetExplorer \ MenuExt -- delete any subkeys you don't want. Take care not to delete programs that you want to remain!
+
+Fix Broken Thumbnail View: Most version of Windows offer the Thumbnail view of folders, but sometimes certain file associations and/or the registration of the component that provides the view can become corrupted. If yours has stopped working, first apply the tweaks to the two HKEY \ CSLID keys. For Windows System folders other than C:\WINDOWS\SYSTEM, substitute as needed. If the view fails on specific file types, use the last tweak and replace the .ext in the example with the appropriate file type: .BMP, .GIF, whatever.
+HKEY \ CSLID \ {7376D660-C583-11D0-A3A5-00C04FD706EC} -- Change the string value (Default) to ImgCtx graphics file emulator.
+HKEY \ CSLID \ {7376D660-C583-11D0-A3A5-00C04FD706EC} \ InProcServer32 -- Change the string value (Default) to C:\\WINDOWS\\SYSTEM\\SHDOCVW.DLL. Change the string value ThreadingModel to Both.
+HKEY \ .ext \ ShellEx \ {BB2E617C-0920-11D1-9A0B-00C04FC2D6C1} -- Change the string value (Default) to {7376D660-C583-11D0-A3A5-00C04FD706EC} 
+Fix Scrambled Desktop Icons: Windows keeps a cache of images of your Desktop icons so it doesn't have to extract them from the appropriate programs every time. If the cache is too small, the icons won't display correctly. For the tweak below, the suggested value is 4096. If that doesn't do the trick, set it higher. You may need to force Windows to reread the cached icons after you increase the cache size. Do this by right-clicking the Desktop, choosing Properties, and clicking on the Appearance tab. Select Icon in the pull-down list labeled Item. Set the icon size to one pixel larger (probably 33) and click Apply. Now set the icon size back to its previous value and click OK.
+HKLM \ SOFTWARE \ Microsoft \ Windows \ CurrentVersion \ Explorer -- In the MaxCachedIcons string, change the DWORD value to 4096 
+Fix AutoRun: If your CD-ROM's AutoRun feature has become accidentally disabled (a problem that occurs regularly in Win ME), you can use this tweak to restore the default settings.
+HKCU \ Software \ Microsoft \ Windows \ CurrentVersion \ Policies \ Explorer -- in NoDriveTypeAutoRun , change the binary value to 95 00 00 00 
+Turn Off IE6's Error Reporting: This wears on my nerves, and as far as I know, does no good whatsoever. (Feel free to correct me, Mr. Gates.) Some people claim that the error reporting actually causes scripting errors. Correct the problem by turning off error reporting thusly.
+HKCU \ Software \ Microsoft \ Internet Explorer \ Main -- in the IEWatsonEnabled string, change the value to 0 
+Show Icons for BMP, DLL, and ICO Files: If you use an icon editor, Windows Explorer may decide to display that program's icon instead of your ICO files' icons. The same technique that fixes this problem can be used to display icons for .BMP files or to display the first-available icon in a .DLL file. In each case, you open the extension's key below HKCR -- for example, HKCR \ .ico . The filetype variable is the Default value's data (in this example, ICOFILE). Substitute this for FILETYPE in the key shown below.
+HKCR \ filetype \ DefaultIcon -- change the default string value to %1 
+Enhancing Performance: 
+Increase Broadband Performance: Depending on what system you're using, you can use one of the following tweaks to improve your broadband performance. If you're still going with Win 95, you'll need to download and install the WinSock 2 update from Microsoft.
+For Win 95/98/ME:
+HKLM \ SYSTEM \ CurrentControlSet \ Services \ VxD \ MSTCP -- in the DefaultTTL string, change the value to 128 ; in the PMTUBlackHoleDetect string, change the value to 0 ; in the PMTUDiscovery string, change the value to 1 ; in the SackOpts string, change the value to 1 ; in the Tcp1323Opts string, change the value to 3
+For Win NT/2K/XP:
+HKLM \ SYSTEM \ CurrentControlSet \ Services \ Tcpip \ Parameters -- change the EnablePTMUDiscovery DWORD value to 1 ; change the DefaultTTL DWORD value to 128 ; change the EnaglePMTUBHDetect DWORD value to 0
+For Win XP only:
+HKLM \ SYSTEM \ CurrentControlSet \ Services \ Tcpip \ Parameters -- change the TcpWindowSize DWORD value to 64240
+For Win 2K and XP only:
+HKLM \ SYSTEM \ CurrentControlSet \ Services \ Tcpip \ Parameters -- change the GlobalMaxTcpWindowSize DWORD value to 32767 ; change the TcpWindowSize DWORD value to 32767 ; change the Tcp1323Opts DWORD value to 3 ; change the SackOpts DWORD value to 1 
+Speed Up Menus: When you move your mouse pointer over submenus, they open up after a momentary delay. You can adjust the delay time to make the menus open faster or slower. Depending on your preference, you should choose a value higher or lower than the default of 400 milliseconds.
+HKCU\ Control Panel \ Desktop -- change the MenuShowDelay string value from the default of 400 milliseconds. 
+Faster Termination of Crashed Programs: When an app is hung, you can kill it by pressing Ctrl+Alt+Del, selecting it, and clicking End Task. But there's a delay between the button click and Windows' acknowledgement. This tweak specifies how long Windows will wait. Try 1000 milliseconds.
+HKCU \ Control Panel \ Desktop -- change the HungAppTimeout string value from the default; change the WaitToKillAppTimeout from the default. 
+Faster Refresh in Windows Explorer: Windows Explorer is often sluggish about updating its display when other programs change files and folders. The following tweak speeds Explorer's response time. The tweak also affects normal system policies. You may encounter problems after employing this tweak; in that case, undo it immediately.
+HKLM \ SYSTEM \ CurrentControlSet \ Control \ Update -- change the UpdateMode binary (or DWORD) value to 00 
+Get Rid of APPLOG Files: Win 98 and ME track the loading patterns of your programs and use the information to fine-tune the DEFRAG process. The benefit, however, might be canceled by the time required and the space used by the C:\WINDOWS\APPLOG file. This tweak deletes the files in that folder and prevents further logging.
+HKLM \ SOFTWARE \ Microsoft \ Windows \ CurrentVersion \ Applets \ Defrag \ AppStartParams -- change the UseProfile DWORD value to 0
+HKLM \ SOFTWARE \ Microsoft \ Windows \ CurrentVersion \ Run -- find and delete the value whose data is the full path name of TASKMON.EXE
+
+Improve NTFS Performance: On busy NTFS drives, you can increase performance by dropping the last-accessed date/time stamp (so NTFS doesn't have to update them) and the DOS-style 8.3 filename, assuming you have no antique programs that require the 8.3 filename.
+For Win NT/2K/XP only:
+HKLM \ SYSTEM \ CurrentControlSet \ Control \ FileSystem -- change the NtfsDisableLastAccessUpdate DWORD value to 1 ; change the NtfsDisable8dot3NameCreation DWORD value to 1 
+Optimize File Allocation Size: If you use a lot of very large files or disk-intensive applications, you may be able to speed up operations by changing the contiguous file allocation size. After making the change, defragment your drives.
+For Win 95/98/ME:
+HKLM \ SYSTEM \ CurrentControlSet \ Control \ FileSystem -- change the ContigFileAllocSize DWORD value to 512
+For Win NT/2K/XP
+HKLM \ System \ CurrentControlSet \ Control \ Session Manager \ Memory Management -- change the ContigFileAllocSize DWORD value to 512 
+Transferring Settings in Internet Explorer: 
+Transfer IE 6 Zone Settings: IE 6 control access to specific sites based on zones specified in the Security tab of Internet Options. In particular, you can block access to a site by adding it to the Restricted zone. The following tweak transfers zone settings to another computer.
+HKCU \ Software \ Microsoft \ Windows \ CurrentVersion \ Internet Settings \ ZoneMap \ Domains -- Select the key and choose EXPORT from the Registry menu. In Win NT 4.0, export to the REGEDIT 4.0 format. Copy the resulting .REG file to the other computer and launch it. 

@@ -1,0 +1,2 @@
+Sorry!!!, Add and delete functions in the directory aren't working..
+So, to add or remove phone numbers, just open the text file of the alphabet in which you wish to add new numbers, edit the file,  and then save the file.
